@@ -45,6 +45,7 @@ export default {
   },
   data() {
     return {
+      currentId:0,
       todoList: [
         {
           id: 0,
@@ -58,9 +59,8 @@ export default {
   },
   methods: {
     addTodo(data) {
-      let currentId = this.todoList.length;
       this.todoList.push({
-        id: currentId,
+        id: ++this.currentId,
         task: data,
         isDone: false,
         isDelete: false,
