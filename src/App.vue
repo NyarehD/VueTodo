@@ -14,19 +14,32 @@
               <span class="badge rounded-pill bg-success float-end" v-else>All Done, Good Job</span>
             </div>
             <ul class="list-group rounded">
-              <li v-for="todo in todoList" :key="todo.id" class="list-group-item created d-flex"
-                  :class="{'deleted':todo.isDelete}" @dblclick.capture="todo.isEditing=true">
-                <div class="col-9" v-if="todo.isEditing">
-                  <input type="text" class="form-control" v-model="todo.task" @keypress.enter="todo.isEditing=false">
-                </div>
-                <div class="col-9"  v-else>
-                  <input type="checkbox" class="form-check-input me-3" :id="'todoId'+todo.id" v-model="todo.isDone">
-                  <label :for="'todoId'+todo.id" :class="['form-label',{'done':todo.isDone}]">{{ todo.task }}</label>
-                </div>
-                <button class="btn btn-danger btn-sm col-3" @click="removeTodo(todo.id)">Delete</button>
-              </li>
+              <!--              <li v-for="todo in todoList" :key="todo.id" class="list-group-item created d-flex"-->
+              <!--                  :class="{'deleted':todo.isDeleted}" @dblclick.capture="todo.isEditing=true">-->
+              <!--                <div class="col-9" v-if="todo.isEditing">-->
+              <!--                  <input type="text" class="form-control" v-model="todo.task" @keypress.enter="todo.isEditing=false">-->
+              <!--                </div>-->
+              <!--                <div class="col-9" v-else>-->
+              <!--                  <input type="checkbox" class="form-check-input me-3" :id="'todoId'+todo.id" v-model="todo.isDone">-->
+              <!--                  <label :for="'todoId'+todo.id" :class="['form-label',{'done':todo.isDone}]">{{ todo.task }}</label>-->
+              <!--                </div>-->
+              <!--                <button class="btn btn-danger btn-sm col-3" @click="removeTodo(todo.id)">Delete</button>-->
+              <!--              </li>-->
+              <Item v-for="todo in todoList" :key="todo.id" :todo-item="todo" @delete="removeTodo"/>
             </ul>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="toast-container position-absolute bottom-0 end-0">
+      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <strong class="me-auto">Bootstrap</strong>
+          <small>11 mins ago</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          Hello, world! This is a toast message.
         </div>
       </div>
     </div>
@@ -36,22 +49,24 @@
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import Input from "@/components/Input";
+import Item from "@/components/Item";
 
 export default {
   name: 'App',
   components: {
     Input,
-    HelloWorld
+    HelloWorld,
+    Item
   },
   data() {
     return {
-      currentId:0,
+      currentId: 0,
       todoList: [
         {
           id: 0,
           task: "Do something",
           isDone: false,
-          isDelete: false,
+          isDeleted: false,
           isEditing: false
         }
       ],
@@ -59,18 +74,20 @@ export default {
   },
   methods: {
     addTodo(data) {
-      this.todoList.push({
-        id: ++this.currentId,
-        task: data,
-        isDone: false,
-        isDelete: false,
-        isEditing: false
-      });
+      if (data) {
+        this.todoList.push({
+          id: ++this.currentId,
+          task: data,
+          isDone: false,
+          isDelete: false,
+          isEditing: false
+        });
+      }
     },
     removeTodo(id) {
       this.todoList.map(function (item) {
         if (item.id === id) {
-          item.isDelete = true;
+          item.isDeleted = true;
         }
       })
       setTimeout(() => this.todoList = this.todoList.filter(item => item.id !== id), 500)
