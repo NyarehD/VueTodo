@@ -22,8 +22,10 @@ export default {
   emits: ["add"],
   methods: {
     add() {
-      this.$emit("add", this.todo)
-      this.todo = ""
+      if (this.todo) {
+        this.$emit("add", this.todo)
+        this.todo = ""
+      }
     }
   },
 }

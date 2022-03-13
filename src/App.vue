@@ -2,15 +2,16 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-5">
-        <div class="card">
+        <div class="card shadow-lg">
           <div class="card-header">
             <h1>Todo List</h1>
           </div>
           <div class="card-body">
             <Input @add="addTodo"></Input>
             <div class="d-flex justify-content-start my-2">
+              <span class="badge rounded-pill bg-primary" v-if="todoList.length===0">Add some tasks</span>
               <span class="badge rounded-pill bg-primary"
-                    v-if="doneTotal!==todoList.length">Done  {{ doneTotal }}</span>
+                    v-else-if="doneTotal!==todoList.length">Done  {{ doneTotal }}</span>
               <span class="badge rounded-pill bg-success float-end" v-else>All Done, Good Job</span>
             </div>
             <ul class="list-group rounded">
@@ -62,6 +63,7 @@ export default {
     return {
       currentId: 0,
       todoList: [
+        // Some faker tasks
         {
           id: 0,
           task: "Do something",
@@ -74,15 +76,13 @@ export default {
   },
   methods: {
     addTodo(data) {
-      if (data) {
-        this.todoList.push({
-          id: ++this.currentId,
-          task: data,
-          isDone: false,
-          isDelete: false,
-          isEditing: false
-        });
-      }
+      this.todoList.push({
+        id: ++this.currentId,
+        task: data,
+        isDone: false,
+        isDelete: false,
+        isEditing: false
+      });
     },
     removeTodo(id) {
       this.todoList.map(function (item) {

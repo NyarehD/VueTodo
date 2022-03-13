@@ -4,8 +4,8 @@
       <input type="text" v-model="todoItem.task" class="form-control" @keypress.enter="todoItem.isEditing=false">
     </div>
     <div class="col-8" v-else>
-      <input type="checkbox" class="me-3 form-check-input" :id="todoItem.id" v-model="todoItem.isDone">
-      <label :for="todoItem.id" @dblclick="todoItem.isEditing=true"
+      <input type="checkbox" class="me-3 form-check-input" v-model="todoItem.isDone">
+      <label @dblclick="todoItem.isEditing=true"
              :class="['form-label',{'done':todoItem.isDone}]">{{ todoItem.task }}</label>
     </div>
     <button class="btn btn-danger btn-sm col-3" @click.prevent="$emit('delete',todoItem.id)">Delete</button>
